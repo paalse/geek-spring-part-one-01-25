@@ -1,5 +1,6 @@
 package ru.geekbrains;
 
+import ru.geekbrains.persist.User;
 import ru.geekbrains.persist.UserRepository;
 
 import javax.servlet.ServletException;
@@ -9,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/first-http-servlet/*")
+@WebServlet("/user/*")
 public class FirstHttpServlet extends HttpServlet {
 
     //--1 Получаем доступ к репозиторю пользователей описанному в BootstrapListener
@@ -21,15 +22,30 @@ public class FirstHttpServlet extends HttpServlet {
     }
     //--1
 
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.getWriter().println("<h1>Привет от сервлета !!!!</h1>");
-        resp.getWriter().println("<p>contextPath: " + req.getContextPath() + "</p>");
-        resp.getWriter().println("<p>servletPath: " + req.getServletPath() + "</p>");
-        resp.getWriter().println("<p>pathInfo: " + req.getPathInfo() + "</p>");
-        resp.getWriter().println("<p>queryString: " + req.getQueryString() + "</p>");
-        resp.getWriter().println("<p>param1: " + req.getParameter("param1") + "</p>");
-        resp.getWriter().println("<p>param2: " + req.getParameter("param2") + "</p>");
+
+        resp.getWriter().println("<table border=\"1\">");
+        resp.getWriter().println("<caption>Пользователи</caption>");
+        resp.getWriter().println("<tr>");
+        resp.getWriter().println("<th>Id</th>");
+        resp.getWriter().println("<th>Name</th>");
+        resp.getWriter().println("</tr>");
+
+        if (req.getPathInfo() == null) {
+            for (User usr : userRepository.findAll()) {
+                resp.getWriter().println("<tr>");
+                resp.getWriter().println("<td>" + usr.getId() + "</td>");
+                resp.getWriter().println("<td>" + usr.getUsername() + "</td>");
+                resp.getWriter().println("</tr>");
+            }
+        } else {
+            User usr = userRepository.findById(Long.parseLong(req.getPathInfo().replaceAll("/", "")));
+            resp.getWriter().println("<tr>");
+            resp.getWriter().println("<td>" + usr.getId() + "</td>");
+            resp.getWriter().println("<td>" + usr.getUsername() + "</td>");
+            resp.getWriter().println("</tr>");
+        }
+        resp.getWriter().println("</table>");
     }
 }
