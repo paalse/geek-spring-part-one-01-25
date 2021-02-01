@@ -9,8 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
-@WebServlet("/user/*")
+@WebServlet("/user-all")
 public class FirstHttpServlet extends HttpServlet {
 
     //--1 Получаем доступ к репозиторю пользователей описанному в BootstrapListener
@@ -24,28 +25,22 @@ public class FirstHttpServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        PrintWriter pw = resp.getWriter();
 
-        resp.getWriter().println("<table border=\"1\">");
-        resp.getWriter().println("<caption>Пользователи</caption>");
-        resp.getWriter().println("<tr>");
-        resp.getWriter().println("<th>Id</th>");
-        resp.getWriter().println("<th>Name</th>");
-        resp.getWriter().println("</tr>");
+        pw.println("<table border=\"1\">");
+        pw.println("<caption>Пользователи</caption>");
+        pw.println("<tr>");
+        pw.println("<th>Id</th>");
+        pw.println("<th>Name</th>");
+        pw.println("</tr>");
 
-        if (req.getPathInfo() == null) {
-            for (User usr : userRepository.findAll()) {
-                resp.getWriter().println("<tr>");
-                resp.getWriter().println("<td>" + usr.getId() + "</td>");
-                resp.getWriter().println("<td>" + usr.getUsername() + "</td>");
-                resp.getWriter().println("</tr>");
-            }
-        } else {
-            User usr = userRepository.findById(Long.parseLong(req.getPathInfo().replaceAll("/", "")));
-            resp.getWriter().println("<tr>");
-            resp.getWriter().println("<td>" + usr.getId() + "</td>");
-            resp.getWriter().println("<td>" + usr.getUsername() + "</td>");
-            resp.getWriter().println("</tr>");
+        for (User usr : userRepository.findAll()) {
+            pw.println("<tr>");
+            pw.println("<td>" + usr.getId() + "</td>");
+            pw.println("<td><a href='" + getServletContext().getContextPath()+"/user/"+ usr.getId()+ "'>" + usr.getUsername() + "</td>");
+            pw.println("</tr>");
         }
+
         resp.getWriter().println("</table>");
     }
 }
