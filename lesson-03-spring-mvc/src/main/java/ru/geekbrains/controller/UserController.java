@@ -56,14 +56,21 @@ public class UserController {
     }
 
     @GetMapping("/new")
-    public String create() {
-        // TODO
-        return null;
+    public String create(Model model) {
+        logger.info("Create new user");
+
+        User user = new User("New user name");
+        user.setId((long) -1);
+
+        model.addAttribute("user", user);
+        return "user_form";
     }
 
     @GetMapping("/{id}/delete")
     public String remove(@PathVariable("id") Long id) {
-        // TODO
-        return null;
+        logger.info("Delete user with id {}", id);
+
+        userRepository.delete(id);
+        return "redirect:/user";
     }
 }
