@@ -5,12 +5,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.persist.User;
 import ru.geekbrains.persist.UserRepository;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/user")
@@ -27,7 +27,7 @@ public class UserController {
 
     @GetMapping
     public String listPage(Model model) {
-        logger.info("List page requested");
+        logger.info("List page requested.");
 
         model.addAttribute("users", userRepository.findAll());
         return "user";
@@ -35,21 +35,31 @@ public class UserController {
 
     @GetMapping("/{id}")
     public String editPage(@PathVariable("id") Long id, Model model) {
-        logger.info("Edit page for id {} requested", id);
+        logger.info("Edit page for id {} requested ", id);
 
         model.addAttribute("user", userRepository.findById(id));
         return "user_form";
     }
 
     @PostMapping("/update")
-    public String update(User user) {
-        logger.info("Update endpoint requested");
+    public String update(@Valid User user, BindingResult result) {
+        logger.info("Update endpoint requested.");
 
-        if (user.getId() != -1) {
-            logger.info("Updating user with id {}", user.getId());
+        // Проводим валидацию
+        if(result.hasErrors()) {
+            return  "user_form";
+        }
+        if(!user.getPassword().equals(user.getMatchingPassword())){
+            result.rejectValue("password", "", "Password not matching");
+            return  "user_form";
+        }
+
+
+        if (user.getId() != null) {
+            logger.info("Updating user with id {} ", user.getId());
             userRepository.update(user);
         } else {
-            logger.info("Creating new user");
+            logger.info("Creating new user.");
             userRepository.insert(user);
         }
         return "redirect:/user";
@@ -57,20 +67,26 @@ public class UserController {
 
     @GetMapping("/new")
     public String create(Model model) {
-        logger.info("Create new user");
+        logger.info("Create new user request.");
 
-        User user = new User("New user name");
-        user.setId((long) -1);
-
-        model.addAttribute("user", user);
+       model.addAttribute("user", new User());
         return "user_form";
     }
 
-    @GetMapping("/{id}/delete")
+//    @GetMapping("/{id}/delete")
+//    public String remove(@PathVariable("id") Long id) {
+//        logger.info("Delete user with id {} ", id);
+//
+//        userRepository.delete(id);
+//        return "redirect:/user";
+//    }
+
+    @DeleteMapping("/{id}")
     public String remove(@PathVariable("id") Long id) {
-        logger.info("Delete user with id {}", id);
+        logger.info("Delete user with id {} ", id);
 
         userRepository.delete(id);
         return "redirect:/user";
     }
+
 }

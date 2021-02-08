@@ -28,7 +28,7 @@ public class ProductController {
 
     @GetMapping
     public String listPage(Model model) {
-        logger.info("List page requested");
+        logger.info("List page requested.");
 
         model.addAttribute("products", productRepository.findAll());
         return "product";
@@ -44,13 +44,13 @@ public class ProductController {
 
     @PostMapping("/update")
     public String update(Product product) {
-        logger.info("Update endpoint requested");
+        logger.info("Update endpoint requested.");
 
-        if (product.getId() != -1) {
+        if (product.getId() != null) {
             logger.info("Updating product with id {}", product.getId());
             productRepository.update(product);
         } else {
-            logger.info("Creating new product");
+            logger.info("Creating new product.");
             productRepository.insert(product);
         }
         return "redirect:/product";
@@ -58,12 +58,9 @@ public class ProductController {
 
     @GetMapping("/new")
     public String create(Model model) {
-        logger.info("Create new product");
+        logger.info("Create new product request.");
 
-        Product product = new Product("New product name","New product description", 0);
-        product.setId((long) -1);
-
-        model.addAttribute("product", product);
+        model.addAttribute("product", new Product());
         return "product_form";
     }
 

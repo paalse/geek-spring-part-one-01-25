@@ -26,7 +26,7 @@ public class ProductRepository {
         return new ArrayList<>(productMap.values());
     }
 
-    public Product findById(long id) {
+    public Product findById(Long id) {
         return productMap.get(id);
     }
 
