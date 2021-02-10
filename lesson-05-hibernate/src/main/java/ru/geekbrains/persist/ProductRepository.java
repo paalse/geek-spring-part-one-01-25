@@ -4,29 +4,29 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
-public class UserRepository {
+public class ProductRepository {
 
     private final EntityManagerFactory emFactory;
     private EntityManager em;
 
-    public UserRepository(EntityManagerFactory emFactory) {
+    public ProductRepository(EntityManagerFactory emFactory) {
         this.emFactory = emFactory;
         this.em = emFactory.createEntityManager();
     }
 
-    public List<User> findAll() {
-        List<User> userList = em.createNamedQuery("allUsers")
+    public List<Product> findAll() {
+        List<Product> ProductList = em.createNamedQuery("allProducts")
                 .getResultList();
-        return userList;
+        return ProductList;
     }
 
-    public User findById(long id) {
-        return em.find(User.class, id);
+    public Product findById(long id) {
+        return em.find(Product.class, id);
     }
 
-    public void insert(User user) {
+    public void insert(Product product) {
         em.getTransaction().begin();
-        em.persist(user);
+        em.persist(product);
         em.getTransaction().commit();
     }
 
@@ -37,9 +37,9 @@ public class UserRepository {
 
     public void deleteById(long id) {
         em.getTransaction().begin();
-        User user = em.find(User.class, id);
-        if (user != null) {
-            em.remove(user);
+        Product product = em.find(Product.class, id);
+        if (product != null) {
+            em.remove(product);
             em.getTransaction().commit();
         }
     }
