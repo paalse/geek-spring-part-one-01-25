@@ -1,10 +1,14 @@
 package ru.geekbrains;
 
 import org.hibernate.cfg.Configuration;
+import ru.geekbrains.persist.Product;
+import ru.geekbrains.persist.ProductRepository;
 import ru.geekbrains.persist.User;
+import ru.geekbrains.persist.UserRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import java.util.List;
 
 
 public class Main {
@@ -13,7 +17,67 @@ public class Main {
                 .configure("hibernate.cfg.xml")
                 .buildSessionFactory();
 
-        EntityManager em = emFactory.createEntityManager();
+
+        //---------------------------------------------
+        // Работа с пользователем через репозиторий
+        //---------------------------------------------
+        UserRepository userRepository = new UserRepository(emFactory);
+
+        // 1.Создание пользователей
+        User user = new User("user1", "password1", "sdfsd@mail.ru");
+        User user1 = new User("user2", "password2", "3532dfsd@mail.ru");
+        User user2 = new User("user3", "password3", "fdghfd@mail.ru");
+        userRepository.insert(user);
+        userRepository.insert(user1);
+        userRepository.insert(user2);
+
+        // 2.Получение всех пользователей
+        List<User> userList = userRepository.findAll();
+        System.out.println(userList);
+
+        // 3.Получение пользователя по ID
+        System.out.println(userRepository.findById(1));
+
+        // 4.Удаление пользователя по ID
+        userRepository.deleteById(1);
+
+        //5. Изменение пользователя
+        User user3 = userRepository.findById(2);
+        user3.setPassword("geyethbdfgb546456");
+        userRepository.saveOrUpdate();
+
+
+        //---------------------------------------------
+        // Работа с продуктом через репозиторий
+        //---------------------------------------------
+        ProductRepository productRepository =new ProductRepository(emFactory);
+
+        // 1.Создание продуктов
+        Product product = new Product("product1", 10);
+        Product product1 = new Product("product2", 20);
+        Product product2 = new Product("product3", 30);
+
+        productRepository.insert(product);
+        productRepository.insert(product1);
+        productRepository.insert(product2);
+
+        // 2.Получение всех ghjlernjd
+        List<Product> productList = productRepository.findAll();
+        System.out.println(productList);
+
+        // 3.Получение продукта по ID
+        System.out.println(productRepository.findById(1));
+
+        // 4.Удаление продукта по ID
+        productRepository.deleteById(1);
+
+        //5. Изменение продукта
+        Product product3 = productRepository.findById(2);
+        product3.setTitle("geyethbdfgb546456");
+        productRepository.saveOrUpdate();
+
+
+//        EntityManager em = emFactory.createEntityManager();
 
         //INSERT
 //        em.getTransaction().begin();
@@ -72,12 +136,12 @@ public class Main {
 //        em.close();
 
         //2-й способ
-        em.getTransaction().begin();
-        em.createQuery("delete from User where username =:username")
-                .setParameter("username", "user3")
-                .executeUpdate();
-        em.getTransaction().commit();
-        em.close();
+//        em.getTransaction().begin();
+//        em.createQuery("delete from User where username =:username")
+//                .setParameter("username", "user3")
+//                .executeUpdate();
+//        em.getTransaction().commit();
+//        em.close();
 
     }
 }

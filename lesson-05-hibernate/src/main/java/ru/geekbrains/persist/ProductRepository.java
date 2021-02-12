@@ -4,34 +4,35 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
-public class UserRepository {
+public class ProductRepository {
 
     private final EntityManagerFactory emFactory;
+    private EntityManager em;
 
-
-    public UserRepository(EntityManagerFactory emFactory) {
+    public ProductRepository(EntityManagerFactory emFactory) {
         this.emFactory = emFactory;
+        this.em = emFactory.createEntityManager();
     }
 
-    public List<User> findAll() {
+    public List<Product> findAll() {
         EntityManager em = emFactory.createEntityManager();
-        List<User> userList = em.createNamedQuery("allUsers")
+        List<Product> ProductList = em.createNamedQuery("allProducts")
                 .getResultList();
         em.close();
-        return userList;
+        return ProductList;
     }
 
-    public User findById(long id) {
+    public Product findById(long id) {
         EntityManager em = emFactory.createEntityManager();
-        User user = em.find(User.class, id);
+        Product product = em.find(Product.class, id);
         em.close();
-        return user;
+        return product;
     }
 
-    public void insert(User user) {
+    public void insert(Product product) {
         EntityManager em = emFactory.createEntityManager();
         em.getTransaction().begin();
-        em.persist(user);
+        em.persist(product);
         em.getTransaction().commit();
         em.close();
     }
@@ -46,9 +47,9 @@ public class UserRepository {
     public void deleteById(long id) {
         EntityManager em = emFactory.createEntityManager();
         em.getTransaction().begin();
-        User user = em.find(User.class, id);
-        if (user != null) {
-            em.remove(user);
+        Product product = em.find(Product.class, id);
+        if (product != null) {
+            em.remove(product);
             em.getTransaction().commit();
         }
         em.close();
