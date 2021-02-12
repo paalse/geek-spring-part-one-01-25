@@ -18,6 +18,7 @@ public class ProductRepository {
         EntityManager em = emFactory.createEntityManager();
         List<Product> ProductList = em.createNamedQuery("allProducts")
                 .getResultList();
+        em.close();
         return ProductList;
     }
 
