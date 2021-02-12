@@ -8,7 +8,6 @@ public class UserRepository {
 
     private final EntityManagerFactory emFactory;
 
-
     public UserRepository(EntityManagerFactory emFactory) {
         this.emFactory = emFactory;
     }
