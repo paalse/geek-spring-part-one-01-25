@@ -37,9 +37,10 @@ public class ProductRepository {
         em.close();
     }
 
-    public void saveOrUpdate() {
+    public void saveOrUpdate(Product product) {
         EntityManager em = emFactory.createEntityManager();
         em.getTransaction().begin();
+        em.merge(product);
         em.getTransaction().commit();
         em.close();
     }

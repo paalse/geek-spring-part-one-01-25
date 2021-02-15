@@ -44,7 +44,7 @@ public class Main {
         //5. Изменение пользователя
         User user3 = userRepository.findById(2);
         user3.setPassword("geyethbdfgb546456");
-        userRepository.saveOrUpdate();
+        userRepository.saveOrUpdate(user3);
 
 
         //---------------------------------------------
@@ -74,7 +74,7 @@ public class Main {
         //5. Изменение продукта
         Product product3 = productRepository.findById(2);
         product3.setTitle("geyethbdfgb546456");
-        productRepository.saveOrUpdate();
+        productRepository.saveOrUpdate(product3);
 
 
 //        EntityManager em = emFactory.createEntityManager();

@@ -35,9 +35,10 @@ public class UserRepository {
         em.close();
     }
 
-    public void saveOrUpdate() {
+    public void saveOrUpdate(User user) {
         EntityManager em = emFactory.createEntityManager();
-        em.getTransaction().begin();
+        em.getTransaction().begin(); // Использовать merge
+        em.merge(user);
         em.getTransaction().commit();
         em.close();
     }
