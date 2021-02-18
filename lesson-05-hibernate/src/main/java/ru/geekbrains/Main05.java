@@ -11,7 +11,7 @@ import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
 
-public class Main {
+public class Main05 {
     public static void main(String[] args) {
         EntityManagerFactory emFactory = new Configuration()
                 .configure("hibernate.cfg.xml")
