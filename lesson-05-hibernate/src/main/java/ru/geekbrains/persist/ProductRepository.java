@@ -39,20 +39,30 @@ public class ProductRepository {
 
     public void saveOrUpdate(Product product) {
         EntityManager em = emFactory.createEntityManager();
-        em.getTransaction().begin();
-        em.merge(product);
-        em.getTransaction().commit();
-        em.close();
+        try {
+            em.getTransaction().begin();
+            em.merge(product);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+        }
     }
 
     public void deleteById(long id) {
         EntityManager em = emFactory.createEntityManager();
-        em.getTransaction().begin();
-        Product product = em.find(Product.class, id);
-        if (product != null) {
-            em.remove(product);
-            em.getTransaction().commit();
+        try {
+            em.getTransaction().begin();
+            Product product = em.find(Product.class, id);
+            if (product != null) {
+                em.remove(product);
+                em.getTransaction().commit();
+            }
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
         }
-        em.close();
     }
 }
