@@ -16,7 +16,10 @@ public class Main06 {
                 .configure("hibernate.cfg.xml")
                 .buildSessionFactory();
         EntityManager em = emFactory.createEntityManager();
-//  INSERT
+
+
+
+        //  INSERT
 //        em.getTransaction().begin();
 //        User user = new User("user2","password1","user1@mail.ru");
 //        em.persist(user);
@@ -32,17 +35,17 @@ public class Main06 {
 //        em.getTransaction().commit();
 
 // SELECT for one to many
-        User user = em.find(User.class, 1l);
-        user.getContacts().forEach(System.out::println);
-
-        // Выборка с параметрами
-        List<Contact> contacts = em.createQuery(
-                "select c from User u " +
-                        "inner join Contact c on u.id=c.user.id " +
-                        "where c.type = 'mobile phone'", Contact.class)
-                .getResultList();
-
-        contacts.forEach(System.out::println);
+//        User user = em.find(User.class, 1l);
+//        user.getContacts().forEach(System.out::println);
+//
+//        // Выборка с параметрами
+//        List<Contact> contacts = em.createQuery(
+//                "select c from User u " +
+//                        "inner join Contact c on u.id=c.user.id " +
+//                        "where c.type = 'mobile phone'", Contact.class)
+//                .getResultList();
+//
+//        contacts.forEach(System.out::println);
 
         em.close();
     }
