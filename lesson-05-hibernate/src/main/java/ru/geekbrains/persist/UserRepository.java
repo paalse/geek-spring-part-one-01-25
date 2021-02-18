@@ -80,6 +80,10 @@ public class UserRepository {
 //        }
     }
 
+
+
+
+
     private <R> R executeForEntityManager(Function<EntityManager, R> function) {
         EntityManager em = emFactory.createEntityManager();
         try {

@@ -20,5 +20,6 @@
         <mapping class="ru.geekbrains.persist.Product"/>
         <mapping class="ru.geekbrains.persist.Contact"/>
         <mapping class="ru.geekbrains.persist.Role"/>
+        <mapping class="ru.geekbrains.persist.LineItem"/>
     </session-factory>
 </hibernate-configuration>
