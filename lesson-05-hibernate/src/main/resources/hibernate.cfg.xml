@@ -18,5 +18,7 @@
 
         <mapping class="ru.geekbrains.persist.User"/>
         <mapping class="ru.geekbrains.persist.Product"/>
+        <mapping class="ru.geekbrains.persist.Contact"/>
+        <mapping class="ru.geekbrains.persist.Role"/>
     </session-factory>
 </hibernate-configuration>
