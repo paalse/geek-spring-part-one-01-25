@@ -7,10 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.geekbrains.persist.User;
-import ru.geekbrains.persist.UserRepository;
+import ru.geekbrains.service.UserRepr;
+import ru.geekbrains.service.UserService;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/user")
@@ -18,18 +20,24 @@ public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    private UserRepository userRepository;
+    private final UserService userService;
 
     @Autowired
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping
-    public String listPage(Model model) {
+    public String listPage(Model model, @RequestParam("usernameFilter") Optional<String> usernameFilter) {
         logger.info("List page requested.");
 
-        model.addAttribute("users", userRepository.findAll());
+        List<UserRepr> users;
+        if (usernameFilter.isPresent()) {
+            users = userService.findWithFilter(usernameFilter.get());
+        } else {
+            users = userService.findAll();
+        }
+        model.addAttribute("users", users);
         return "user";
     }
 
@@ -37,31 +45,27 @@ public class UserController {
     public String editPage(@PathVariable("id") Long id, Model model) {
         logger.info("Edit page for id {} requested ", id);
 
-        model.addAttribute("user", userRepository.findById(id));
+        model.addAttribute("user", userService.findById(id)
+                .orElseThrow(NotFoundException::new));
         return "user_form";
     }
 
     @PostMapping("/update")
-    public String update(@Valid User user, BindingResult result) {
+    public String update(@Valid UserRepr user, BindingResult result) {
         logger.info("Update endpoint requested.");
 
         // Проводим валидацию
-        if(result.hasErrors()) {
-            return  "user_form";
+        if (result.hasErrors()) {
+            return "user_form";
         }
-        if(!user.getPassword().equals(user.getMatchingPassword())){
+        if (!user.getPassword().equals(user.getMatchingPassword())) {
             result.rejectValue("password", "", "Password not matching");
-            return  "user_form";
+            return "user_form";
         }
 
+        logger.info("Updating user with id {} ", user.getId());
+        userService.save(user);
 
-        if (user.getId() != null) {
-            logger.info("Updating user with id {} ", user.getId());
-            userRepository.update(user);
-        } else {
-            logger.info("Creating new user.");
-            userRepository.insert(user);
-        }
         return "redirect:/user";
     }
 
@@ -69,7 +73,7 @@ public class UserController {
     public String create(Model model) {
         logger.info("Create new user request.");
 
-       model.addAttribute("user", new User());
+        model.addAttribute("user", new UserRepr());
         return "user_form";
     }
 
@@ -85,7 +89,7 @@ public class UserController {
     public String remove(@PathVariable("id") Long id) {
         logger.info("Delete user with id {} ", id);
 
-        userRepository.delete(id);
+        userService.delete(id);
         return "redirect:/user";
     }
 
