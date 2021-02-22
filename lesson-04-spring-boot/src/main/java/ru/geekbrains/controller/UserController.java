@@ -32,7 +32,7 @@ public class UserController {
         logger.info("List page requested.");
 
         List<UserRepr> users;
-        if (usernameFilter.isPresent()) {
+        if (usernameFilter.isPresent() && !usernameFilter.get().isEmpty()) {
             users = userService.findWithFilter(usernameFilter.get());
         } else {
             users = userService.findAll();
@@ -51,7 +51,7 @@ public class UserController {
     }
 
     @PostMapping("/update")
-    public String update(@Valid UserRepr user, BindingResult result) {
+    public String update(@Valid @ModelAttribute("user") UserRepr user, BindingResult result) {
         logger.info("Update endpoint requested.");
 
         // Проводим валидацию
@@ -76,14 +76,6 @@ public class UserController {
         model.addAttribute("user", new UserRepr());
         return "user_form";
     }
-
-//    @GetMapping("/{id}/delete")
-//    public String remove(@PathVariable("id") Long id) {
-//        logger.info("Delete user with id {} ", id);
-//
-//        userRepository.delete(id);
-//        return "redirect:/user";
-//    }
 
     @DeleteMapping("/{id}")
     public String remove(@PathVariable("id") Long id) {

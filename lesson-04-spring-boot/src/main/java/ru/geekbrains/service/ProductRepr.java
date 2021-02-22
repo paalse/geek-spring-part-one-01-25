@@ -1,38 +1,33 @@
-package ru.geekbrains.persist;
+package ru.geekbrains.service;
 
-import ru.geekbrains.service.ProductRepr;
+import ru.geekbrains.persist.Product;
 
-import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
 
-// Класс взаимодействия с БД
-@Entity
-@Table(name ="products")
-public class Product {
+//DTO, класс взаимодействия с пользователем
+public class ProductRepr {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @NotEmpty
     private String productname;
 
-    @Column
+    @NotEmpty
     private String description;
 
-    @Column
+    @NotEmpty
     private BigDecimal price;
 
-    public Product() {
-    }
+    public ProductRepr() {}
 
-    public Product(String productname, String description, BigDecimal price) {
+    public ProductRepr(String productname, String description, BigDecimal price) {
         this.productname = productname;
         this.description = description;
         this.price = price;
     }
 
-    public Product(ProductRepr product) {
+    public ProductRepr(Product product) {
         this.id = product.getId();
         this.productname = product.getProductname();
         this.description = product.getDescription();
@@ -51,8 +46,8 @@ public class Product {
         return productname;
     }
 
-    public void setProductname(String name) {
-        this.productname = name;
+    public void setProductname(String productname) {
+        this.productname = productname;
     }
 
     public String getDescription() {

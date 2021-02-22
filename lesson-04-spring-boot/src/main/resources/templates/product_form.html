@@ -39,9 +39,9 @@
                 <input type="hidden" th:field="*{id}" id="id" name="id">
 
                 <div class="form-group">
-                    <label>Name</label>
-                    <input type="text" th:field="*{name}" class="form-control" id="name" name="name" placeholder="Enter name">
-                    <p class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Empty name.</p>
+                    <label>Product name</label>
+                    <input type="text" th:field="*{productname}" class="form-control" id="productname" name="productname" placeholder="Enter product name">
+                    <p class="text-danger" th:if="${#fields.hasErrors('productname')}" th:errors="*{productname}">Empty product name.</p>
                 </div>
 
                 <div class="form-group">
@@ -51,7 +51,7 @@
 
                 <div class="form-group">
                     <label>Price</label>
-                    <input type="number" th:field="*{price}" class="form-control" id="price" name="price" placeholder="Enter price">
+                    <input type="BigDecimal" th:field="*{price}" class="form-control" id="price" name="price" placeholder="Enter price">
                     <p class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price is null.</p>
                 </div>
 

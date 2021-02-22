@@ -1,46 +1,20 @@
 package ru.geekbrains.persist;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
-public class ProductRepository {
-    private Map<Long, Product> productMap = new ConcurrentHashMap<>();
+public interface ProductRepository extends JpaRepository<Product, Long> {
+    List<Product> findProductByProductnameLike(String productname);
 
-    private AtomicLong identity = new AtomicLong(0);
-
-    @PostConstruct
-    public void init() {
-        this.insert(new Product("Product1", "Description product1", 95));
-        this.insert(new Product("Product2", "Description product2", 105));
-        this.insert(new Product("Product3", "Description product3", 125));
-    }
-
-    public List<Product> findAll() {
-        return new ArrayList<>(productMap.values());
-    }
-
-    public Product findById(Long id) {
-        return productMap.get(id);
-    }
-
-    public void insert(Product product) {
-        long id= identity.incrementAndGet();
-        product.setId(id);
-        productMap.put(id, product);
-    }
-
-    public void update(Product product) {
-        productMap.put(product.getId(), product);
-    }
-
-    public void delete(long id) {
-        productMap.remove(id);
-    }
+    @Query("select p from Product p " +
+            "where (p.productname like :productname or :productname is null)" +
+            "and (p.price >= :pricefrom or :pricefrom is null)" +
+            "and (p.price <= :priceto or :priceto is null)")
+    List<Product> findProduct(@Param("productname") String productname, @Param("pricefrom")BigDecimal pricefrom, @Param("priceto") BigDecimal priceto);
 }

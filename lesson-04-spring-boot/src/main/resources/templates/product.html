@@ -38,6 +38,31 @@
             <a class="btn btn-primary" th:href="@{/product/new}">Add Product</a>
         </div>
 
+        <div class="col-12 mt-3">
+            <form class="form-inline" th:method="get">
+
+                <div class="form-group mb-2 mr-2">
+                    <label for="productnameFilter" class="sr-only">Productname filter</label>
+                    <input type="text" class="form-control" id="usernameFilter" th:value="${param.productnameFilter}"
+                           name="productnameFilter" placeholder="Productname filter">
+                </div>
+
+                <div class="form-group mb-2 mr-2">
+                    <label for="pricefromFilter" class="sr-only">Pricefrom filter</label>
+                    <input type="BigNumber" class="form-control" id="pricefromFilter" th:value="${param.pricefromFilter}"
+                           name="pricefromFilter" placeholder="Pricefrom filter">
+                </div>
+
+                <div class="form-group mb-2 mr-2">
+                    <label for="pricetoFilter" class="sr-only">Priceto filter</label>
+                    <input type="BigNumber" class="form-control" id="pricetoFilter" th:value="${param.pricetoFilter}"
+                           name="pricetoFilter" placeholder="Priceto filter">
+                </div>
+
+                <button type="submit" class="btn btn-primary mb-2">Apply</button>
+            </form>
+        </div>
+
         <div class="col-12">
             <table class="table table-bordered my-2">
                 <thead>
@@ -52,7 +77,7 @@
                 <tbody>
                 <tr th:each="product : ${products}" >
                     <th th:text="${product.id}" scope="row">1</th>
-                    <td th:text="${product.name}">ProductX</td>
+                    <td th:text="${product.productname}">ProductX</td>
                     <td th:text="${product.description}">ProductX</td>
                     <td th:text="${product.price}">0</td>
                     <td>
