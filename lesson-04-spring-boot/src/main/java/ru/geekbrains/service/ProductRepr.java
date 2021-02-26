@@ -16,7 +16,7 @@ public class ProductRepr {
     @NotEmpty
     private String description;
 
-    @NotEmpty
+  //  @NotEmpty
     private BigDecimal price;
 
     public ProductRepr() {}

@@ -4,7 +4,6 @@ import ru.geekbrains.service.UserRepr;
 
 import javax.persistence.*;
 
-// Класс взаимодействия с базой данных
 @Entity
 @Table(name = "users")
 public class User {
@@ -16,13 +15,17 @@ public class User {
     @Column(unique = true, nullable = false)
     private String username;
 
-    @Column(nullable = false,length = 512)
+    @Column(nullable = false, length = 512)
     private String password;
 
     @Column
     private String email;
 
-    public User() {}
+    @Column
+    private Integer age;
+
+    public User() {
+    }
 
     public User(String username) {
         this.username = username;
@@ -33,6 +36,7 @@ public class User {
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.email = user.getEmail();
+        this.age = user.getAge();
     }
 
     public Long getId() {
@@ -65,5 +69,24 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", age=" + age +
+                '}';
     }
 }

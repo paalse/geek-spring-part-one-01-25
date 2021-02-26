@@ -31,9 +31,12 @@ public class ProductController {
     }
 
     @GetMapping
-    public String listPage(Model model, @RequestParam("productnameFilter") Optional<String> productnameFilter,
+    public String listPage(Model model,
+                           @RequestParam("productnameFilter") Optional<String> productnameFilter,
                            @RequestParam("pricefromFilter") Optional<BigDecimal> pricefromFilter,
-                           @RequestParam("pricetoFilter") Optional<BigDecimal> pricetoFilter) {
+                           @RequestParam("pricetoFilter") Optional<BigDecimal> pricetoFilter,
+                           @RequestParam("page") Optional<Integer> page,         // Для пагенации, страница
+                           @RequestParam("size") Optional<Integer> size) {        // Для пагенации, размер
         logger.info("List page requested.");
 
         List<ProductRepr> products;

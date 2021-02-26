@@ -1,11 +1,15 @@
 package ru.geekbrains.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.geekbrains.persist.Product;
 import ru.geekbrains.persist.ProductRepository;
 
+import javax.swing.text.html.HTMLDocument;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +40,11 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
     }
 
+
+
     @Override
     public List<ProductRepr> findWithFilter(String productnameFilter, BigDecimal priceFromFilter, BigDecimal priceToFilter) {
+
         return productRepository.findProduct(productnameFilter, priceFromFilter, priceToFilter).stream()
                 .map(ProductRepr::new)
                 .collect(Collectors.toList());
