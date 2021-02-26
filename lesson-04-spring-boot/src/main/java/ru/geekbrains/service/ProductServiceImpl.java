@@ -1,17 +1,12 @@
 package ru.geekbrains.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.geekbrains.persist.Product;
 import ru.geekbrains.persist.ProductRepository;
 
-import javax.swing.text.html.HTMLDocument;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -60,7 +55,11 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public void save(ProductRepr product) {
-        productRepository.save(new Product(product));
+        Product productToSave = new Product(product);
+        productRepository.save(productToSave);
+        if (product.getId() == null) {
+            product.setId(productToSave.getId());
+        }
     }
 
     @Transactional
