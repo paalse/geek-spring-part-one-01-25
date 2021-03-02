@@ -13,12 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.geekbrains.service.ProductRepr;
 import ru.geekbrains.service.ProductService;
-import ru.geekbrains.service.UserRepr;
-
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 
 @Controller

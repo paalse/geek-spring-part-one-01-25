@@ -14,7 +14,7 @@ public interface ProductService {
 
     Optional<ProductRepr> findById(long id) ;
 
-    void save(ProductRepr user);
+    void save(ProductRepr product);
 
     void delete(long id);
 }
