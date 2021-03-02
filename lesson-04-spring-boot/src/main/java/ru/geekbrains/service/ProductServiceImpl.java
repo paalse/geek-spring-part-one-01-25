@@ -1,10 +1,13 @@
 package ru.geekbrains.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.geekbrains.persist.Product;
-import ru.geekbrains.persist.ProductRepository;
+import ru.geekbrains.persist.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,6 +21,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     public ProductServiceImpl(ProductRepository productRepository) {
+
         this.productRepository = productRepository;
     }
 
@@ -29,20 +33,24 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductRepr> findWithFilter(String productnameFilter) {
-        return productRepository.findProductByProductnameLike(productnameFilter).stream()
-                .map(ProductRepr::new)
-                .collect(Collectors.toList());
-    }
-
-
-
-    @Override
-    public List<ProductRepr> findWithFilter(String productnameFilter, BigDecimal priceFromFilter, BigDecimal priceToFilter) {
-
-        return productRepository.findProduct(productnameFilter, priceFromFilter, priceToFilter).stream()
-                .map(ProductRepr::new)
-                .collect(Collectors.toList());
+    public Page<ProductRepr> findWithFilter(String productnameFilter, BigDecimal priceFromFilter, BigDecimal priceToFilter,
+                                            Integer page, Integer size, String sortField) {
+        Specification<Product> spec = Specification.where(null);
+        if (productnameFilter != null && !productnameFilter.isEmpty()) {
+            spec = spec.and(ProductSpecification.productnameLike(productnameFilter));
+        }
+        if (priceFromFilter != null) {
+            spec = spec.and(ProductSpecification.priceFrom(priceFromFilter));
+        }
+        if (priceToFilter != null) {
+            spec = spec.and(ProductSpecification.priceTo(priceToFilter));
+        }
+        if (sortField != null && !sortField.isEmpty()) {
+            return productRepository.findAll(spec, PageRequest.of(page, size, Sort.by(sortField)))
+                    .map(ProductRepr::new);
+        }
+        return productRepository.findAll(spec, PageRequest.of(page, size))
+                .map(ProductRepr::new);
     }
 
     @Transactional

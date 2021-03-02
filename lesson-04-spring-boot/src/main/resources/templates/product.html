@@ -18,20 +18,20 @@
 
                 <div class="form-group mb-2 mr-2">
                     <label for="productnameFilter" class="sr-only">Productname filter</label>
-                    <input type="text" class="form-control" id="usernameFilter" th:value="${param.productnameFilter}"
+                    <input type="text" class="form-control" id="productnameFilter" th:value="${param.productnameFilter}"
                            name="productnameFilter" placeholder="Productname filter">
                 </div>
 
                 <div class="form-group mb-2 mr-2">
-                    <label for="pricefromFilter" class="sr-only">Pricefrom filter</label>
-                    <input type="BigNumber" class="form-control" id="pricefromFilter" th:value="${param.pricefromFilter}"
-                           name="pricefromFilter" placeholder="Pricefrom filter">
+                    <label for="priceFromFilter" class="sr-only">Price from</label>
+                    <input type="BigNumber" class="form-control" id="pricefromFilter" th:value="${param.priceFromFilter}"
+                           name="priceFromFilter" placeholder="Price from filter">
                 </div>
 
                 <div class="form-group mb-2 mr-2">
-                    <label for="pricetoFilter" class="sr-only">Priceto filter</label>
-                    <input type="BigNumber" class="form-control" id="pricetoFilter" th:value="${param.pricetoFilter}"
-                           name="pricetoFilter" placeholder="Priceto filter">
+                    <label for="priceToFilter" class="sr-only">Price to</label>
+                    <input type="BigNumber" class="form-control" id="pricetoFilter" th:value="${param.priceToFilter}"
+                           name="priceToFilter" placeholder="Price to filter">
                 </div>
 
                 <button type="submit" class="btn btn-primary mb-2">Apply</button>
@@ -42,10 +42,10 @@
             <table class="table table-bordered my-2">
                 <thead>
                 <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Price</th>
+                    <th scope="col" th:replace="fragments/sort_header :: sort_header ('Id', 'id')"/>
+                    <th scope="col"th:replace="fragments/sort_header :: sort_header ('Name', 'productname')"/>
+                    <th scope="col" th:replace="fragments/sort_header :: sort_header ('Description', 'description')"/>
+                    <th scope="col" th:replace="fragments/sort_header :: sort_header ('Price', 'price')"/>
                     <th scope="col">Actions</th>
                 </tr>
                 </thead>
@@ -57,13 +57,13 @@
                     <td th:text="${product.price}">0</td>
                     <td>
                         <a class="btn btn-success" th:href="@{/product/{id}(id = ${product.id})}"><i class="fas fa-edit"></i></a>
-<!--                        <a class="btn btn-danger" th:href="@{/product/{id}/delete(id = ${product.id})}"><i class="far fa-trash-alt"></i></a>-->
                         <form class="d-inline" th:method="delete" th:action="@{/product/{id}(id = ${product.id})}">
                             <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
                         </form>
                     </td>
                 </tr>
-                <tr th:if="${products.empty}">
+
+                <tr th:unless="${products.hasContent()}">
                     <td colspan="5">No data </td>
                 </tr>
                 </tbody>
@@ -77,12 +77,15 @@
                     <a class="page-link" href="#" tabindex="-1">Previous</a>
                 </li>
 
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-
-                <li class="page-item active">
-                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+                <li th:each="num: ${#numbers.sequence(1, products.totalPages)}"
+                    th:classappend="${num == products.number + 1} ? 'active'"
+                    class="page-item">
+                    <a th:text="${num}"
+                       th:href="@{/product(page=${num}, size=${products.size},
+                           productnameFilter=${param.productnameFilter}, priceFrom=${param.priceFrom}, priceTo=${param.priceTo}, sortField=${param.sortField})}"
+                       class="page-link">1 <span th:if="${num == products.number + 1}" class="sr-only">(current)</span></a>
                 </li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
+
                 <li class="page-item">
                     <a class="page-link" href="#">Next</a>
                 </li>
