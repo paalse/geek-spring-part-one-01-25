@@ -4,6 +4,7 @@ import ru.geekbrains.persist.Product;
 
 import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 //DTO, класс взаимодействия с пользователем
 public class ProductRepr {
@@ -64,5 +65,18 @@ public class ProductRepr {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductRepr that = (ProductRepr) o;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

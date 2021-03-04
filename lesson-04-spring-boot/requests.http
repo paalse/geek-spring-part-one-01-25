@@ -27,3 +27,14 @@ Content-Type:application/json
 ###
 DELETE http://localhost:8080/spring-mvc-app/api/v1/product/1
 
+###
+GET http://localhost:8080/spring-mvc-app/api/v1/user/filter?page=2&sortField=id
+
+###
+POST http://localhost:8080/spring-mvc-app/api/v1/cart/1/user/2/product?qty=5
+
+###
+GET http://localhost:8080/spring-mvc-app/api/v1/cart/1/user
+
+###
+POST http://localhost:8080/spring-mvc-app/api/v1/cart/remove/1/user/2/product?qty=3
