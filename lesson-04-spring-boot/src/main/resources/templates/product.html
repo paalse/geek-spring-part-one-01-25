@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="fragments/head.html :: head"/>
 
@@ -10,7 +11,7 @@
 <div class="container">
     <div class="row py-2">
         <div class="col-12">
-            <a class="btn btn-primary" th:href="@{/product/new}">Добавить</a>
+            <a sec:authorize="hasRole('ADMIN')" class="btn btn-primary" th:href="@{/product/new}">Добавить</a>
         </div>
 
         <div class="col-12 mt-3">
@@ -46,7 +47,7 @@
                     <th scope="col"th:replace="fragments/sort_header_product :: sort_header ('Name', 'productname')"/>
                     <th scope="col" th:replace="fragments/sort_header_product :: sort_header ('Description', 'description')"/>
                     <th scope="col" th:replace="fragments/sort_header_product :: sort_header ('Price', 'price')"/>
-                    <th scope="col">Actions</th>
+                    <th sec:authorize="hasRole('ADMIN')" scope="col">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -55,7 +56,7 @@
                     <td th:text="${product.productname}">ProductX</td>
                     <td th:text="${product.description}">ProductX</td>
                     <td th:text="${product.price}">0</td>
-                    <td>
+                    <td sec:authorize="hasRole('ADMIN')">
                         <a class="btn btn-success" th:href="@{/product/{id}(id = ${product.id})}"><i class="fas fa-edit"></i></a>
                         <form class="d-inline" th:method="delete" th:action="@{/product/{id}(id = ${product.id})}">
                             <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
