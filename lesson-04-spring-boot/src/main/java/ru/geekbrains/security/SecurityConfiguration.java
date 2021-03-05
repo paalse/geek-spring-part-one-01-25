@@ -40,10 +40,16 @@ public class SecurityConfiguration {
                     .authorizeRequests()
                     .antMatchers("/**/*.css", "/**/*.js").permitAll()
                     .antMatchers("/product/**").permitAll()
-                    .antMatchers("/user/**").authenticated()
+                    .antMatchers("/user/**").hasAnyRole("ADMIN", "SUPER_ADMIN")//authenticated()
                     .and()
-                    .formLogin()
-                    .defaultSuccessUrl("/product");
+                        .formLogin()
+                        .loginPage("/login").permitAll()
+                        .loginProcessingUrl("/authenticateTheUser")
+                        .defaultSuccessUrl("/product")
+                    .and()
+                        .logout()
+                        .permitAll()
+                        .logoutSuccessUrl("/product");
         }
     }
 }
