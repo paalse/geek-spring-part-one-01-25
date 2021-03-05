@@ -74,8 +74,14 @@
         <div class="col-12">
         <nav aria-label="...">
             <ul class="pagination">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                <li class="page-item">
+                    <a class="page-link"
+                       th:if ="!${products.number <= 0}"
+                       th:href="@{/product(page = ${(products.number - 1)+1}, sizeTable=${products.getSize()},
+                           productnameFilter=${param.productnameFilter},
+                           priceFrom=${param.priceFrom},
+                           priceTo=${param.priceTo},
+                           sort=${param.sort})}">Previous</a>
                 </li>
 
                 <li th:each="num: ${#numbers.sequence(1, products.totalPages)}"
@@ -83,12 +89,21 @@
                     class="page-item">
                     <a th:text="${num}"
                        th:href="@{/product(page=${num}, size=${products.size},
-                           productnameFilter=${param.productnameFilter}, priceFrom=${param.priceFrom}, priceTo=${param.priceTo}, sortField=${param.sortField})}"
+                           productnameFilter=${param.productnameFilter},
+                           priceFrom=${param.priceFrom},
+                           priceTo=${param.priceTo},
+                           sortField=${param.sortField})}"
                        class="page-link">1 <span th:if="${num == products.number + 1}" class="sr-only">(current)</span></a>
                 </li>
 
                 <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
+                    <a class="page-link"
+                       th:if ="!${products.number >= products.totalPages - 1}"
+                       th:href="@{/product(page = ${(products.number + 1)+1}, sizeTable=${products.getSize()},
+                           productnameFilter=${param.productnameFilter},
+                           priceFrom=${param.priceFrom},
+                           priceTo=${param.priceTo},
+                           sort=${param.sort})}">Next</a>
                 </li>
             </ul>
         </nav>
@@ -100,3 +115,4 @@
 
 </body>
 </html>
+
