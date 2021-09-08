@@ -27,7 +27,7 @@ public class UserController {
 
     @GetMapping
     public String listPage(Model model) {
-        logger.info("List page request.");
+        logger.info("List page request");
 
         model.addAttribute("users", userRepository.findAll());
         return "user";
@@ -50,7 +50,7 @@ public class UserController {
         }
 
         if(!user.getPassword().equals(user.getMatchingPassword())) {
-            result.rejectValue("password", "", "Password not matching.");
+            result.rejectValue("password", "", "Password not matching");
             return "user_form";
         }
 

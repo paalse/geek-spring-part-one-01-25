@@ -27,7 +27,7 @@ public class ProductController {
 
     @GetMapping
     public String listPage(Model model) {
-        logger.info("List page request.");
+        logger.info("List page request");
 
         model.addAttribute("products", productRepository.findAll());
         return "product";
