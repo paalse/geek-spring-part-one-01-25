@@ -1,6 +1,7 @@
 package ru.paalse.persist;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -23,6 +24,14 @@ public class User {
     @Column (length=512, nullable = false)
     private String password;
 
+    @OneToMany(mappedBy = "user")
+    private List<Contact> contacts;
+
+    @ManyToMany(mappedBy = "users")
+    private List<Role> roles;
+
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders;
 
     public User() {
     }
@@ -67,6 +76,30 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Contact> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(List<Contact> contacts) {
+        this.contacts = contacts;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     @Override

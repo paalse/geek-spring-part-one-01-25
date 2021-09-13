@@ -2,9 +2,14 @@ package ru.paalse.persist;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
+@NamedQueries({
+        @NamedQuery(name = "productByName", query = "from Product p where p.productname=:productname"),
+        @NamedQuery(name = "allProducts", query = "from Product")
+})
 public class Product {
 
     @Id
@@ -20,10 +25,19 @@ public class Product {
     @Column(nullable = false)
     private BigDecimal price;
 
+    @OneToMany(mappedBy = "product")
+    private List<LineItem> lineItems;
+
     public Product() {}
 
     public Product(String productname) {
         this.productname = productname;
+    }
+
+    public Product(String productname, String description, BigDecimal price) {
+        this.productname = productname;
+        this.description = description;
+        this.price = price;
     }
 
     public Long getId() {
@@ -56,5 +70,13 @@ public class Product {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public List<LineItem> getLineItems() {
+        return lineItems;
+    }
+
+    public void setLineItems(List<LineItem> lineItems) {
+        this.lineItems = lineItems;
     }
 }

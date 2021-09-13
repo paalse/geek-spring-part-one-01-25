@@ -17,5 +17,10 @@
         <property name="hibernate.format_sql">true</property>
 
         <mapping class = "ru.paalse.persist.User"/>
+        <mapping class = "ru.paalse.persist.Role"/>
+        <mapping class = "ru.paalse.persist.Contact"/>
+        <mapping class = "ru.paalse.persist.Product"/>
+        <mapping class = "ru.paalse.persist.LineItem"/>
+        <mapping class = "ru.paalse.persist.Order"/>
     </session-factory>
 </hibernate-configuration>

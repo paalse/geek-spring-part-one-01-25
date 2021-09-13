@@ -7,37 +7,37 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 
-public class UserRepository {
+public class ProductRepository {
 
     private final EntityManagerFactory emFactory;
 
-    public UserRepository(EntityManagerFactory emFactory) {
+    public ProductRepository(EntityManagerFactory emFactory) {
         this.emFactory = emFactory;
     }
 
-    public List<User> findAll() {
-        return executeForEntityManager(em -> em.createNamedQuery("allUsers", User.class).getResultList());
+    public List<Product> findAll() {
+        return executeForEntityManager(em -> em.createNamedQuery("allProducts", Product.class).getResultList());
 //        EntityManager em = emFactory.createEntityManager();
-//        List<User> userList = em.createNamedQuery("allUsers")
+//        List<Product> productList = em.createNamedQuery("allProducts")
 //                .getResultList();
 //        em.close();
-//        return userList;
+//        return productList;
     }
 
-    public User findById(long id) {
-        return executeForEntityManager(em -> em.find(User.class, id));
+    public Product findById(long id) {
+        return executeForEntityManager(em -> em.find(Product.class, id));
 //        EntityManager em = emFactory.createEntityManager();
-//        User user = em.find(User.class, id);
+//        Product product = em.find(Product.class, id);
 //        em.close();
-//        return user;
+//        return product;
     }
 
-    public void insert(User user) {
-        executeInTransaction(em -> em.persist(user));
+    public void insert(Product product) {
+        executeInTransaction(em -> em.persist(product));
 //        EntityManager em = emFactory.createEntityManager();
 //        try {
 //            em.getTransaction().begin();
-//            em.persist(user);
+//            em.persist(product);
 //            em.getTransaction().commit();
 //        } catch (Exception e) {
 //            em.getTransaction().rollback();
@@ -46,12 +46,12 @@ public class UserRepository {
 //        }
     }
 
-    public void saveOrUpdate(User user) {
-        executeInTransaction(em -> em.merge(user));
+    public void saveOrUpdate(Product product) {
+        executeInTransaction(em -> em.merge(product));
 //        EntityManager em = emFactory.createEntityManager();
 //        try {
 //            em.getTransaction().begin();
-//            em.merge(user);
+//            em.merge(product);
 //            em.getTransaction().commit();
 //        } catch (Exception e) {
 //            em.getTransaction().rollback();
@@ -61,17 +61,17 @@ public class UserRepository {
     }
 
     public void deleteById(long id) {
-        executeInTransaction(em -> {User user = em.find(User.class, id);
-            if (user != null) {
-                em.remove(user);
+        executeInTransaction(em -> {Product product = em.find(Product.class, id);
+            if (product != null) {
+                em.remove(product);
             }
         });
 //        EntityManager em = emFactory.createEntityManager();
 //        try {
 //            em.getTransaction().begin();
-//            User user = em.find(User.class, id);
-//            if (user != null) {
-//                em.remove(user);
+//            Product product = em.find(Product.class, id);
+//            if (product != null) {
+//                em.remove(product);
 //                em.getTransaction().commit();
 //            }
 //        } catch (Exception e) {
