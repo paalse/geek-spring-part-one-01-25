@@ -1,35 +1,33 @@
-package ru.paalse.persist;
+package ru.paalse.service;
 
-import ru.paalse.service.UserRepr;
+import ru.paalse.persist.User;
 
-import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-@Entity
-@Table(name = "users")
-public class User {
+public class UserRepr {
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @NotEmpty
     private String username;
 
-    @Column
+    @Email
     private String email;
 
-    @Column(nullable = false, length = 512)
+    @NotEmpty
     private String password;
 
-    public User() { }
+    @NotEmpty
+    private String matchingPassword;
 
-    public User(String username) {
+    public UserRepr() { }
+
+    public UserRepr(String username) {
         this.username = username;
     }
 
-    public User (UserRepr user) {
+    public UserRepr(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
         this.email = user.getEmail();
@@ -66,5 +64,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getMatchingPassword() {
+        return matchingPassword;
+    }
+
+    public void setMatchingPassword(String matchingPassword) {
+        this.matchingPassword = matchingPassword;
     }
 }

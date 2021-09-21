@@ -1,38 +1,35 @@
-package ru.paalse.persist;
+package ru.paalse.service;
 
-import ru.paalse.service.ProductRepr;
+import ru.paalse.persist.Product;
 
-import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
-@Entity
-@Table(name = "products")
-public class Product {
+public class ProductRepr {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @NotEmpty
     private String productname;
 
-    @Column(length = 512, nullable = true)
+    @NotEmpty
     private String description;
 
-    @Column(nullable = false)
+    @NotNull
     private BigDecimal price;
 
-    public Product() {}
+    public ProductRepr() {
+    }
 
-
-    public Product(ProductRepr product) {
+    public ProductRepr(Product product) {
         this.id = product.getId();
         this.productname = product.getProductname();
         this.description = product.getDescription();
         this.price = product.getPrice();
     }
 
-    public Product(String productname) {
+    public ProductRepr(String productname) {
         this.productname = productname;
     }
 
